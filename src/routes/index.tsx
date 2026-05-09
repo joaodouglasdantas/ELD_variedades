@@ -69,8 +69,8 @@ function HomePage() {
               </div>
             </div>
             <div className="relative hidden md:flex justify-center">
-              <div className="absolute inset-0 bg-gradient-rose blur-3xl opacity-20 rounded-full" />
-              <img src={logo} alt="Logo Eunice Luzia Dantas" className="relative w-[600px] max-w-full drop-shadow-2xl" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-blossom/40 to-white/30 blur-3xl rounded-full" />
+              <img src={logo} alt="Logo Eunice Luzia Dantas" className="relative w-[600px] max-w-full" />
             </div>
           </div>
         </section>
