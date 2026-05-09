@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/logo-white.png";
+import logo from "@/assets/logo.png";
 import { Sparkles, Heart, Truck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -48,7 +48,7 @@ function HomePage() {
   });
 
   const heroBg =
-    "linear-gradient(to right, oklch(0.97 0.03 350) 0%, oklch(0.88 0.08 355) 45%, oklch(0.65 0.16 349) 100%)";
+    "linear-gradient(to right, oklch(0.97 0.03 350) 0%, oklch(0.88 0.08 355) 45%, oklch(0.9 0.05 340) 100%)";
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -89,7 +89,7 @@ function HomePage() {
               <img
                 src={logo}
                 alt="Logo Eunice Luzia Dantas"
-                className="relative w-[600px] max-w-full drop-shadow-2xl"
+                className="relative w-[600px] max-w-full"
               />
             </div>
           </div>
