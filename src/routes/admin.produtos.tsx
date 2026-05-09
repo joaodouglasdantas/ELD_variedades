@@ -11,6 +11,7 @@ export const Route = createFileRoute("/admin/produtos")({
   component: AdminProdutos,
 });
 
+type ProductColor = { name: string; hex: string };
 type ProductRow = {
   id: string;
   name: string;
@@ -19,6 +20,8 @@ type ProductRow = {
   category_id: string | null;
   active: boolean;
   featured: boolean;
+  colors: ProductColor[];
+  sizes: string[];
   product_images: { id: string; url: string; storage_path: string | null; sort_order: number }[];
 };
 
