@@ -77,34 +77,40 @@ export type Database = {
         Row: {
           active: boolean
           category_id: string | null
+          colors: Json
           created_at: string
           description: string | null
           featured: boolean
           id: string
           name: string
           price: number
+          sizes: string[]
           updated_at: string
         }
         Insert: {
           active?: boolean
           category_id?: string | null
+          colors?: Json
           created_at?: string
           description?: string | null
           featured?: boolean
           id?: string
           name: string
           price?: number
+          sizes?: string[]
           updated_at?: string
         }
         Update: {
           active?: boolean
           category_id?: string | null
+          colors?: Json
           created_at?: string
           description?: string | null
           featured?: boolean
           id?: string
           name?: string
           price?: number
+          sizes?: string[]
           updated_at?: string
         }
         Relationships: [
