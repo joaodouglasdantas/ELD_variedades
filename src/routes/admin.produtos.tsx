@@ -134,10 +134,32 @@ function ProductForm({
   const [categoryId, setCategoryId] = useState(initial?.category_id ?? "");
   const [active, setActive] = useState(initial?.active ?? true);
   const [featured, setFeatured] = useState(initial?.featured ?? false);
+  const [sizes, setSizes] = useState<string[]>(initial?.sizes ?? []);
+  const [sizeInput, setSizeInput] = useState("");
+  const [colors, setColors] = useState<ProductColor[]>(initial?.colors ?? []);
+  const [colorName, setColorName] = useState("");
+  const [colorHex, setColorHex] = useState("#f5b8c8");
   const [images, setImages] = useState(initial?.product_images.sort((a, b) => a.sort_order - b.sort_order) ?? []);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const addSizes = () => {
+    const parts = sizeInput.split(",").map((s) => s.trim()).filter(Boolean);
+    if (!parts.length) return;
+    setSizes((cur) => Array.from(new Set([...cur, ...parts])));
+    setSizeInput("");
+  };
+  const removeSize = (s: string) => setSizes((cur) => cur.filter((x) => x !== s));
+  const addColor = () => {
+    const n = colorName.trim();
+    if (!n) return;
+    if (colors.some((c) => c.name.toLowerCase() === n.toLowerCase())) return;
+    setColors((cur) => [...cur, { name: n, hex: colorHex }]);
+    setColorName("");
+  };
+  const removeColor = (n: string) => setColors((cur) => cur.filter((c) => c.name !== n));
+
 
   const productId = initial?.id;
 
