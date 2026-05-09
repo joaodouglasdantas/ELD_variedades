@@ -6,6 +6,8 @@ import { Footer } from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 
+const ADMIN_EMAIL = "eunice@gmail.com";
+
 export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
@@ -13,7 +15,6 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const { isAdmin, user } = useAuth();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,23 +25,19 @@ function LoginPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (email.trim().toLowerCase() !== ADMIN_EMAIL) {
+      toast.error("Acesso não autorizado.");
+      return;
+    }
+
     setLoading(true);
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
-        });
-        if (error) throw error;
-        toast.success("Conta criada! Você já está logada.");
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success("Bem-vinda!");
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      toast.success("Bem-vinda, Eunice!");
     } catch (err: any) {
-      toast.error(err.message ?? "Erro ao entrar");
+      toast.error(err.message ?? "E-mail ou senha incorretos.");
     } finally {
       setLoading(false);
     }
@@ -57,26 +54,40 @@ function LoginPage() {
           <form onSubmit={submit} className="mt-6 space-y-4">
             <label className="block">
               <span className="text-sm font-medium">E-mail</span>
-              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 w-full px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary"
+              />
             </label>
             <label className="block">
               <span className="text-sm font-medium">Senha</span>
-              <input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 w-full px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary" />
+              <input
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 w-full px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary"
+              />
             </label>
-            <button disabled={loading} className="w-full bg-gradient-rose text-primary-foreground py-2.5 rounded-full shadow-card hover:opacity-90 transition disabled:opacity-50">
-              {loading ? "Aguarde..." : mode === "signin" ? "Entrar" : "Criar conta"}
+            <button
+              disabled={loading}
+              className="w-full bg-gradient-rose text-primary-foreground py-2.5 rounded-full shadow-card hover:opacity-90 transition disabled:opacity-50"
+            >
+              {loading ? "Aguarde..." : "Entrar"}
             </button>
           </form>
 
-          <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="mt-4 w-full text-sm text-primary hover:underline">
-            {mode === "signin" ? "Primeiro acesso? Criar conta de administrador" : "Já tem conta? Entrar"}
-          </button>
-
           {user && !isAdmin && (
-            <p className="mt-4 text-sm text-center text-destructive">Esta conta não é administradora.</p>
+            <p className="mt-4 text-sm text-center text-destructive">Esta conta não tem acesso ao painel.</p>
           )}
 
-          <Link to="/" className="block text-center text-xs text-muted-foreground mt-6 hover:text-primary">← Voltar à loja</Link>
+          <Link to="/" className="block text-center text-xs text-muted-foreground mt-6 hover:text-primary">
+            &larr; Voltar à loja
+          </Link>
         </div>
       </main>
       <Footer />

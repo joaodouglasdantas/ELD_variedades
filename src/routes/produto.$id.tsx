@@ -35,21 +35,31 @@ function ProductPage() {
   });
 
   if (isLoading) {
-    return <div className="min-h-screen"><Header /><p className="text-center py-20">Carregando...</p></div>;
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <p className="text-center py-20">Carregando...</p>
+      </div>
+    );
   }
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col"><Header />
+      <div className="min-h-screen flex flex-col">
+        <Header />
         <main className="flex-1 container mx-auto px-4 py-20 text-center">
-          <p>Produto não encontrado.</p>
-          <Link to="/produtos" className="text-primary underline mt-4 inline-block">Voltar ao catálogo</Link>
+          <p>Produto nao encontrado.</p>
+          <Link to="/produtos" className="text-primary underline mt-4 inline-block">
+            Voltar ao catalogo
+          </Link>
         </main>
         <Footer />
       </div>
     );
   }
 
-  const images = (product.product_images ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order);
+  const images = (product.product_images ?? []).sort(
+    (a: any, b: any) => a.sort_order - b.sort_order
+  );
   const cur = images[imgIdx];
   const sizes: string[] = (product as any).sizes ?? [];
   const colors: { name: string; hex: string }[] = (product as any).colors ?? [];
@@ -63,34 +73,56 @@ function ProductPage() {
       toast.error("Selecione uma cor");
       return;
     }
-    const variantParts = [selectedSize && `Tam ${selectedSize}`, selectedColor && `Cor ${selectedColor}`].filter(Boolean);
-    const suffix = variantParts.length ? ` (${variantParts.join(" / ")})` : "";
-    const variantId = `${product.id}${selectedSize ? `|s:${selectedSize}` : ""}${selectedColor ? `|c:${selectedColor}` : ""}`;
-    cart.add({ id: variantId, name: product.name + suffix, price: Number(product.price), image: cur?.url }, qty);
+    const variantParts = [
+      selectedSize && ("Tam " + selectedSize),
+      selectedColor && ("Cor " + selectedColor),
+    ].filter(Boolean);
+    const suffix = variantParts.length ? " (" + variantParts.join(" / ") + ")" : "";
+    const variantId =
+      product.id +
+      (selectedSize ? ("|s:" + selectedSize) : "") +
+      (selectedColor ? ("|c:" + selectedColor) : "");
+    cart.add(
+      { id: variantId, name: product.name + suffix, price: Number(product.price), image: cur?.url },
+      qty
+    );
     toast.success("Adicionado ao carrinho!");
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <Link to="/produtos" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6">
+      <main className="flex-1 container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <Link
+          to="/produtos"
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4 sm:mb-6"
+        >
           <ChevronLeft className="h-4 w-4" /> Voltar
         </Link>
 
-        <div className="grid md:grid-cols-2 gap-10">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
+          {/* Imagens */}
           <div>
             <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-blossom shadow-card">
               {cur ? (
                 <img src={cur.url} alt={product.name} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full grid place-items-center font-script text-3xl text-muted-foreground/50">sem foto</div>
+                <div className="w-full h-full grid place-items-center font-script text-3xl text-muted-foreground/50">
+                  sem foto
+                </div>
               )}
             </div>
             {images.length > 1 && (
               <div className="grid grid-cols-5 gap-2 mt-3">
                 {images.map((im: any, i: number) => (
-                  <button key={im.id ?? i} onClick={() => setImgIdx(i)} className={`aspect-square rounded-lg overflow-hidden border-2 transition ${i === imgIdx ? "border-primary" : "border-transparent"}`}>
+                  <button
+                    key={im.id ?? i}
+                    onClick={() => setImgIdx(i)}
+                    className={
+                      "aspect-square rounded-lg overflow-hidden border-2 transition " +
+                      (i === imgIdx ? "border-primary" : "border-transparent")
+                    }
+                  >
                     <img src={im.url} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
@@ -98,16 +130,27 @@ function ProductPage() {
             )}
           </div>
 
-          <div>
+          {/* Info */}
+          <div className="min-w-0">
             {product.categories && (
-              <Link to="/produtos" search={{ cat: product.categories.slug }} className="text-xs uppercase tracking-wider text-primary">
+              <Link
+                to="/produtos"
+                search={{ cat: product.categories.slug }}
+                className="text-xs uppercase tracking-wider text-primary truncate block"
+              >
                 {product.categories.name}
               </Link>
             )}
-            <h1 className="font-display text-4xl mt-2">{product.name}</h1>
-            <p className="text-3xl text-primary font-medium mt-4">{brl(Number(product.price))}</p>
+            <h1 className="font-display text-2xl sm:text-4xl mt-2 break-words leading-tight">
+              {product.name}
+            </h1>
+            <p className="text-2xl sm:text-3xl text-primary font-medium mt-4">
+              {brl(Number(product.price))}
+            </p>
             {product.description && (
-              <p className="mt-6 text-muted-foreground whitespace-pre-line leading-relaxed">{product.description}</p>
+              <p className="mt-6 text-muted-foreground whitespace-pre-line leading-relaxed text-sm sm:text-base">
+                {product.description}
+              </p>
             )}
 
             {sizes.length > 0 && (
@@ -118,7 +161,12 @@ function ProductPage() {
                     <button
                       key={s}
                       onClick={() => setSelectedSize(s)}
-                      className={`min-w-12 px-4 py-2 rounded-full border text-sm transition ${selectedSize === s ? "bg-foreground text-background border-foreground" : "border-border hover:border-primary"}`}
+                      className={
+                        "min-w-12 px-4 py-2 rounded-full border text-sm transition " +
+                        (selectedSize === s
+                          ? "bg-foreground text-background border-foreground"
+                          : "border-border hover:border-primary")
+                      }
                     >
                       {s}
                     </button>
@@ -129,7 +177,12 @@ function ProductPage() {
 
             {colors.length > 0 && (
               <div className="mt-6">
-                <p className="text-sm font-medium mb-2">Cor {selectedColor && <span className="text-muted-foreground font-normal">— {selectedColor}</span>}</p>
+                <p className="text-sm font-medium mb-2">
+                  Cor{" "}
+                  {selectedColor && (
+                    <span className="text-muted-foreground font-normal">— {selectedColor}</span>
+                  )}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {colors.map((c) => (
                     <button
@@ -137,7 +190,12 @@ function ProductPage() {
                       onClick={() => setSelectedColor(c.name)}
                       title={c.name}
                       aria-label={c.name}
-                      className={`h-10 w-10 rounded-full border-2 transition ${selectedColor === c.name ? "border-foreground ring-2 ring-foreground/20" : "border-border hover:border-primary"}`}
+                      className={
+                        "h-10 w-10 rounded-full border-2 transition " +
+                        (selectedColor === c.name
+                          ? "border-foreground ring-2 ring-foreground/20"
+                          : "border-border hover:border-primary")
+                      }
                       style={{ background: c.hex }}
                     />
                   ))}
@@ -145,17 +203,34 @@ function ProductPage() {
               </div>
             )}
 
-            <div className="mt-8 flex items-center gap-4">
-              <div className="flex items-center border border-border rounded-full">
-                <button onClick={() => setQty(Math.max(1, qty - 1))} className="p-3 hover:bg-secondary rounded-l-full"><Minus className="h-4 w-4" /></button>
-                <span className="px-4 min-w-10 text-center">{qty}</span>
-                <button onClick={() => setQty(qty + 1)} className="p-3 hover:bg-secondary rounded-r-full"><Plus className="h-4 w-4" /></button>
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+              <div className="flex items-center border border-border rounded-full flex-shrink-0">
+                <button
+                  onClick={() => setQty(Math.max(1, qty - 1))}
+                  className="p-2.5 sm:p-3 hover:bg-secondary rounded-l-full"
+                >
+                  <Minus className="h-4 w-4" />
+                </button>
+                <span className="px-3 sm:px-4 min-w-8 sm:min-w-10 text-center text-sm sm:text-base">
+                  {qty}
+                </span>
+                <button
+                  onClick={() => setQty(qty + 1)}
+                  className="p-2.5 sm:p-3 hover:bg-secondary rounded-r-full"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
               </div>
               <button
                 onClick={handleAdd}
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-rose text-primary-foreground px-6 py-3 rounded-full shadow-soft hover:opacity-90 transition"
+                className={
+                  "flex-1 min-w-[180px] inline-flex items-center justify-center gap-2 " +
+                  "bg-gradient-rose text-primary-foreground px-4 sm:px-6 py-3 rounded-full " +
+                  "shadow-soft hover:opacity-90 transition text-sm sm:text-base"
+                }
               >
-                <ShoppingBag className="h-4 w-4" /> Adicionar ao carrinho
+                <ShoppingBag className="h-4 w-4 flex-shrink-0" />
+                <span className="truncate">Adicionar ao carrinho</span>
               </button>
             </div>
           </div>

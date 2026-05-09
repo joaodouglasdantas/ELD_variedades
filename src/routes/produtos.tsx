@@ -19,7 +19,10 @@ function ProductsPage() {
   const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("categories").select("*").order("sort_order");
+      const { data, error } = await supabase
+        .from("categories")
+        .select("*")
+        .order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -43,7 +46,10 @@ function ProductsPage() {
         id: p.id,
         name: p.name,
         price: Number(p.price),
-        image: p.product_images?.sort((a: any, b: any) => a.sort_order - b.sort_order)[0]?.url ?? null,
+        image:
+          p.product_images
+            ?.sort((a: any, b: any) => a.sort_order - b.sort_order)[0]
+            ?.url ?? null,
       }));
     },
     enabled: !cat || !!categories,
@@ -52,18 +58,36 @@ function ProductsPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-10">
-        <header className="text-center mb-10">
-          <p className="font-script text-primary text-lg">nosso catálogo</p>
-          <h1 className="font-display text-4xl">Produtos</h1>
+      <main className="flex-1 container mx-auto px-3 sm:px-4 py-8 sm:py-10">
+        <header className="text-center mb-8">
+          <p className="font-script text-primary text-lg">nosso catalogo</p>
+          <h1 className="font-display text-3xl sm:text-4xl">Produtos</h1>
         </header>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          <Link to="/produtos" className={`px-4 py-2 rounded-full text-sm border transition ${!cat ? "bg-foreground text-background border-foreground" : "bg-card hover:bg-secondary border-border"}`}>
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <Link
+            to="/produtos"
+            className={
+              "px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm border transition max-w-[130px] truncate " +
+              (!cat
+                ? "bg-foreground text-background border-foreground"
+                : "bg-card hover:bg-secondary border-border")
+            }
+          >
             Todos
           </Link>
           {categories?.map((c) => (
-            <Link key={c.id} to="/produtos" search={{ cat: c.slug }} className={`px-4 py-2 rounded-full text-sm border transition ${cat === c.slug ? "bg-foreground text-background border-foreground" : "bg-card hover:bg-secondary border-border"}`}>
+            <Link
+              key={c.id}
+              to="/produtos"
+              search={{ cat: c.slug }}
+              className={
+                "px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm border transition max-w-[130px] truncate " +
+                (cat === c.slug
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-card hover:bg-secondary border-border")
+              }
+            >
               {c.name}
             </Link>
           ))}
@@ -72,11 +96,13 @@ function ProductsPage() {
         {isLoading ? (
           <p className="text-center text-muted-foreground">Carregando...</p>
         ) : products && products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {products.map((p) => <ProductCard key={p.id} p={p} />)}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            {products.map((p) => (
+              <ProductCard key={p.id} p={p} />
+            ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-gradient-blossom rounded-3xl">
+          <div className="text-center py-16 bg-gradient-blossom rounded-3xl px-4">
             <p className="font-display text-xl">Nenhum produto nesta categoria ainda.</p>
           </div>
         )}
