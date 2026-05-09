@@ -209,6 +209,8 @@ function ProductForm({
         category_id: categoryId || null,
         active,
         featured,
+        sizes,
+        colors: colors as any,
       };
       if (initial) {
         const { error } = await supabase.from("products").update(payload).eq("id", initial.id);
