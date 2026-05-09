@@ -18,6 +18,8 @@ function ProductPage() {
   const cart = useCart();
   const [qty, setQty] = useState(1);
   const [imgIdx, setImgIdx] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
