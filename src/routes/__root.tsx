@@ -48,11 +48,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Eunice Luzia Dantas — Variedades, Roupas e Perfumes" },
+      { title: "Eunice Luzia Dantas — Variedades" },
       { name: "description", content: "Roupas, perfumes e variedades selecionadas com carinho. Peça pelo WhatsApp." },
       { property: "og:title", content: "Eunice Luzia Dantas — Variedades" },
-      { property: "og:description", content: "Roupas, perfumes e variedades. Peça pelo WhatsApp." },
+      { property: "og:description", content: "Roupas, perfumes e variedades selecionadas com carinho. Peça pelo WhatsApp." },
       { property: "og:type", content: "website" },
+      { name: "twitter:title", content: "Eunice Luzia Dantas — Variedades" },
+      { name: "twitter:description", content: "Roupas, perfumes e variedades selecionadas com carinho. Peça pelo WhatsApp." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ocPFRf1icuNjKI1OPV828WEPs6A3/social-images/social-1778362752069-ideogram-v3.0_crie_uma_logo_pra_uma_loja_de_variedades_com_tom_rosa_na_fonte_e_fundo_branco_a_-0.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ocPFRf1icuNjKI1OPV828WEPs6A3/social-images/social-1778362752069-ideogram-v3.0_crie_uma_logo_pra_uma_loja_de_variedades_com_tom_rosa_na_fonte_e_fundo_branco_a_-0.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
