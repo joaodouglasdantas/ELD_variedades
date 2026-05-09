@@ -67,10 +67,13 @@
 
 @layer base {
   * { border-color: var(--color-border); }
+  html { font-size: 17px; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 1.05rem;
+    line-height: 1.6;
   }
   h1, h2, h3, h4, h5 { font-family: var(--font-display); letter-spacing: -0.01em; }
 }
