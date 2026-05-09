@@ -272,6 +272,65 @@ function ProductForm({
             </label>
           </div>
 
+          {/* Sizes */}
+          <div className="border-t border-border pt-4">
+            <span className="text-sm font-medium">Tamanhos disponíveis</span>
+            <p className="text-xs text-muted-foreground mb-2">Ex.: P, M, G ou 36, 38, 40. Deixe vazio se não tiver tamanho.</p>
+            <div className="flex gap-2">
+              <input
+                value={sizeInput}
+                onChange={(e) => setSizeInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addSizes(); } }}
+                placeholder="Digite e pressione Enter (ou separe por vírgula)"
+                className="flex-1 px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary text-sm"
+              />
+              <button type="button" onClick={addSizes} className="px-4 py-2 rounded-lg bg-secondary hover:bg-accent text-sm">Adicionar</button>
+            </div>
+            {sizes.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {sizes.map((s) => (
+                  <span key={s} className="inline-flex items-center gap-1 bg-secondary px-3 py-1 rounded-full text-sm">
+                    {s}
+                    <button type="button" onClick={() => removeSize(s)} className="hover:text-destructive"><X className="h-3 w-3" /></button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Colors */}
+          <div className="border-t border-border pt-4">
+            <span className="text-sm font-medium">Cores disponíveis</span>
+            <p className="text-xs text-muted-foreground mb-2">Adicione um nome (ex.: Rosa) e escolha o tom.</p>
+            <div className="flex gap-2 items-center">
+              <input
+                value={colorName}
+                onChange={(e) => setColorName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addColor(); } }}
+                placeholder="Nome da cor"
+                className="flex-1 px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary text-sm"
+              />
+              <input
+                type="color"
+                value={colorHex}
+                onChange={(e) => setColorHex(e.target.value)}
+                className="h-10 w-12 rounded-lg border border-input bg-background cursor-pointer"
+              />
+              <button type="button" onClick={addColor} className="px-4 py-2 rounded-lg bg-secondary hover:bg-accent text-sm">Adicionar</button>
+            </div>
+            {colors.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {colors.map((c) => (
+                  <span key={c.name} className="inline-flex items-center gap-2 bg-secondary px-3 py-1 rounded-full text-sm">
+                    <span className="h-4 w-4 rounded-full border border-border" style={{ background: c.hex }} />
+                    {c.name}
+                    <button type="button" onClick={() => removeColor(c.name)} className="hover:text-destructive"><X className="h-3 w-3" /></button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Images */}
           <div className="border-t border-border pt-4">
             <div className="flex justify-between items-center mb-3">
