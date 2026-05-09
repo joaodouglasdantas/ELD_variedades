@@ -53,10 +53,10 @@ function HomePage() {
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/70 backdrop-blur text-xs text-primary font-medium border border-border/60">
                 <Sparkles className="h-3 w-3" /> Novidades toda semana
               </span>
-              <h1 className="mt-5 font-display text-5xl md:text-6xl leading-[1.05] text-foreground">
+              <h1 className="mt-5 font-display text-6xl md:text-7xl leading-[1.05] text-foreground">
                 Variedades escolhidas <span className="font-script text-primary block mt-2">com carinho</span>
               </h1>
-              <p className="mt-5 text-muted-foreground max-w-md">
+              <p className="mt-6 text-lg text-muted-foreground max-w-md">
                 Roupas, perfumes e muito mais. Monte seu carrinho e finalize direto no WhatsApp — fácil, rápido e pessoal.
               </p>
               <div className="mt-8 flex gap-3">
@@ -70,7 +70,7 @@ function HomePage() {
             </div>
             <div className="relative hidden md:flex justify-center">
               <div className="absolute inset-0 bg-gradient-rose blur-3xl opacity-20 rounded-full" />
-              <img src={logo} alt="Logo Eunice Luzia Dantas" className="relative w-[420px] drop-shadow-2xl" />
+              <img src={logo} alt="Logo Eunice Luzia Dantas" className="relative w-[600px] max-w-full drop-shadow-2xl" />
             </div>
           </div>
         </section>
