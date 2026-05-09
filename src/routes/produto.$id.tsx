@@ -18,6 +18,8 @@ function ProductPage() {
   const cart = useCart();
   const [qty, setQty] = useState(1);
   const [imgIdx, setImgIdx] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -49,6 +51,24 @@ function ProductPage() {
 
   const images = (product.product_images ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order);
   const cur = images[imgIdx];
+  const sizes: string[] = (product as any).sizes ?? [];
+  const colors: { name: string; hex: string }[] = (product as any).colors ?? [];
+
+  const handleAdd = () => {
+    if (sizes.length > 0 && !selectedSize) {
+      toast.error("Selecione um tamanho");
+      return;
+    }
+    if (colors.length > 0 && !selectedColor) {
+      toast.error("Selecione uma cor");
+      return;
+    }
+    const variantParts = [selectedSize && `Tam ${selectedSize}`, selectedColor && `Cor ${selectedColor}`].filter(Boolean);
+    const suffix = variantParts.length ? ` (${variantParts.join(" / ")})` : "";
+    const variantId = `${product.id}${selectedSize ? `|s:${selectedSize}` : ""}${selectedColor ? `|c:${selectedColor}` : ""}`;
+    cart.add({ id: variantId, name: product.name + suffix, price: Number(product.price), image: cur?.url }, qty);
+    toast.success("Adicionado ao carrinho!");
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -90,6 +110,41 @@ function ProductPage() {
               <p className="mt-6 text-muted-foreground whitespace-pre-line leading-relaxed">{product.description}</p>
             )}
 
+            {sizes.length > 0 && (
+              <div className="mt-6">
+                <p className="text-sm font-medium mb-2">Tamanho</p>
+                <div className="flex flex-wrap gap-2">
+                  {sizes.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setSelectedSize(s)}
+                      className={`min-w-12 px-4 py-2 rounded-full border text-sm transition ${selectedSize === s ? "bg-foreground text-background border-foreground" : "border-border hover:border-primary"}`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {colors.length > 0 && (
+              <div className="mt-6">
+                <p className="text-sm font-medium mb-2">Cor {selectedColor && <span className="text-muted-foreground font-normal">— {selectedColor}</span>}</p>
+                <div className="flex flex-wrap gap-2">
+                  {colors.map((c) => (
+                    <button
+                      key={c.name}
+                      onClick={() => setSelectedColor(c.name)}
+                      title={c.name}
+                      aria-label={c.name}
+                      className={`h-10 w-10 rounded-full border-2 transition ${selectedColor === c.name ? "border-foreground ring-2 ring-foreground/20" : "border-border hover:border-primary"}`}
+                      style={{ background: c.hex }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mt-8 flex items-center gap-4">
               <div className="flex items-center border border-border rounded-full">
                 <button onClick={() => setQty(Math.max(1, qty - 1))} className="p-3 hover:bg-secondary rounded-l-full"><Minus className="h-4 w-4" /></button>
@@ -97,10 +152,7 @@ function ProductPage() {
                 <button onClick={() => setQty(qty + 1)} className="p-3 hover:bg-secondary rounded-r-full"><Plus className="h-4 w-4" /></button>
               </div>
               <button
-                onClick={() => {
-                  cart.add({ id: product.id, name: product.name, price: Number(product.price), image: cur?.url }, qty);
-                  toast.success("Adicionado ao carrinho!");
-                }}
+                onClick={handleAdd}
                 className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-rose text-primary-foreground px-6 py-3 rounded-full shadow-soft hover:opacity-90 transition"
               >
                 <ShoppingBag className="h-4 w-4" /> Adicionar ao carrinho

@@ -11,6 +11,7 @@ export const Route = createFileRoute("/admin/produtos")({
   component: AdminProdutos,
 });
 
+type ProductColor = { name: string; hex: string };
 type ProductRow = {
   id: string;
   name: string;
@@ -19,6 +20,8 @@ type ProductRow = {
   category_id: string | null;
   active: boolean;
   featured: boolean;
+  colors: ProductColor[];
+  sizes: string[];
   product_images: { id: string; url: string; storage_path: string | null; sort_order: number }[];
 };
 
@@ -131,10 +134,32 @@ function ProductForm({
   const [categoryId, setCategoryId] = useState(initial?.category_id ?? "");
   const [active, setActive] = useState(initial?.active ?? true);
   const [featured, setFeatured] = useState(initial?.featured ?? false);
+  const [sizes, setSizes] = useState<string[]>(initial?.sizes ?? []);
+  const [sizeInput, setSizeInput] = useState("");
+  const [colors, setColors] = useState<ProductColor[]>(initial?.colors ?? []);
+  const [colorName, setColorName] = useState("");
+  const [colorHex, setColorHex] = useState("#f5b8c8");
   const [images, setImages] = useState(initial?.product_images.sort((a, b) => a.sort_order - b.sort_order) ?? []);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const addSizes = () => {
+    const parts = sizeInput.split(",").map((s) => s.trim()).filter(Boolean);
+    if (!parts.length) return;
+    setSizes((cur) => Array.from(new Set([...cur, ...parts])));
+    setSizeInput("");
+  };
+  const removeSize = (s: string) => setSizes((cur) => cur.filter((x) => x !== s));
+  const addColor = () => {
+    const n = colorName.trim();
+    if (!n) return;
+    if (colors.some((c) => c.name.toLowerCase() === n.toLowerCase())) return;
+    setColors((cur) => [...cur, { name: n, hex: colorHex }]);
+    setColorName("");
+  };
+  const removeColor = (n: string) => setColors((cur) => cur.filter((c) => c.name !== n));
+
 
   const productId = initial?.id;
 
@@ -184,6 +209,8 @@ function ProductForm({
         category_id: categoryId || null,
         active,
         featured,
+        sizes,
+        colors: colors as any,
       };
       if (initial) {
         const { error } = await supabase.from("products").update(payload).eq("id", initial.id);
@@ -243,6 +270,65 @@ function ProductForm({
               <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} />
               <span className="text-sm">Destaque na home</span>
             </label>
+          </div>
+
+          {/* Sizes */}
+          <div className="border-t border-border pt-4">
+            <span className="text-sm font-medium">Tamanhos disponíveis</span>
+            <p className="text-xs text-muted-foreground mb-2">Ex.: P, M, G ou 36, 38, 40. Deixe vazio se não tiver tamanho.</p>
+            <div className="flex gap-2">
+              <input
+                value={sizeInput}
+                onChange={(e) => setSizeInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addSizes(); } }}
+                placeholder="Digite e pressione Enter (ou separe por vírgula)"
+                className="flex-1 px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary text-sm"
+              />
+              <button type="button" onClick={addSizes} className="px-4 py-2 rounded-lg bg-secondary hover:bg-accent text-sm">Adicionar</button>
+            </div>
+            {sizes.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {sizes.map((s) => (
+                  <span key={s} className="inline-flex items-center gap-1 bg-secondary px-3 py-1 rounded-full text-sm">
+                    {s}
+                    <button type="button" onClick={() => removeSize(s)} className="hover:text-destructive"><X className="h-3 w-3" /></button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Colors */}
+          <div className="border-t border-border pt-4">
+            <span className="text-sm font-medium">Cores disponíveis</span>
+            <p className="text-xs text-muted-foreground mb-2">Adicione um nome (ex.: Rosa) e escolha o tom.</p>
+            <div className="flex gap-2 items-center">
+              <input
+                value={colorName}
+                onChange={(e) => setColorName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addColor(); } }}
+                placeholder="Nome da cor"
+                className="flex-1 px-3 py-2 rounded-lg border border-input bg-background outline-none focus:border-primary text-sm"
+              />
+              <input
+                type="color"
+                value={colorHex}
+                onChange={(e) => setColorHex(e.target.value)}
+                className="h-10 w-12 rounded-lg border border-input bg-background cursor-pointer"
+              />
+              <button type="button" onClick={addColor} className="px-4 py-2 rounded-lg bg-secondary hover:bg-accent text-sm">Adicionar</button>
+            </div>
+            {colors.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {colors.map((c) => (
+                  <span key={c.name} className="inline-flex items-center gap-2 bg-secondary px-3 py-1 rounded-full text-sm">
+                    <span className="h-4 w-4 rounded-full border border-border" style={{ background: c.hex }} />
+                    {c.name}
+                    <button type="button" onClick={() => removeColor(c.name)} className="hover:text-destructive"><X className="h-3 w-3" /></button>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Images */}
