@@ -51,6 +51,24 @@ function ProductPage() {
 
   const images = (product.product_images ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order);
   const cur = images[imgIdx];
+  const sizes: string[] = (product as any).sizes ?? [];
+  const colors: { name: string; hex: string }[] = (product as any).colors ?? [];
+
+  const handleAdd = () => {
+    if (sizes.length > 0 && !selectedSize) {
+      toast.error("Selecione um tamanho");
+      return;
+    }
+    if (colors.length > 0 && !selectedColor) {
+      toast.error("Selecione uma cor");
+      return;
+    }
+    const variantParts = [selectedSize && `Tam ${selectedSize}`, selectedColor && `Cor ${selectedColor}`].filter(Boolean);
+    const suffix = variantParts.length ? ` (${variantParts.join(" / ")})` : "";
+    const variantId = `${product.id}${selectedSize ? `|s:${selectedSize}` : ""}${selectedColor ? `|c:${selectedColor}` : ""}`;
+    cart.add({ id: variantId, name: product.name + suffix, price: Number(product.price), image: cur?.url }, qty);
+    toast.success("Adicionado ao carrinho!");
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
