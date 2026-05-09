@@ -110,6 +110,41 @@ function ProductPage() {
               <p className="mt-6 text-muted-foreground whitespace-pre-line leading-relaxed">{product.description}</p>
             )}
 
+            {sizes.length > 0 && (
+              <div className="mt-6">
+                <p className="text-sm font-medium mb-2">Tamanho</p>
+                <div className="flex flex-wrap gap-2">
+                  {sizes.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setSelectedSize(s)}
+                      className={`min-w-12 px-4 py-2 rounded-full border text-sm transition ${selectedSize === s ? "bg-foreground text-background border-foreground" : "border-border hover:border-primary"}`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {colors.length > 0 && (
+              <div className="mt-6">
+                <p className="text-sm font-medium mb-2">Cor {selectedColor && <span className="text-muted-foreground font-normal">— {selectedColor}</span>}</p>
+                <div className="flex flex-wrap gap-2">
+                  {colors.map((c) => (
+                    <button
+                      key={c.name}
+                      onClick={() => setSelectedColor(c.name)}
+                      title={c.name}
+                      aria-label={c.name}
+                      className={`h-10 w-10 rounded-full border-2 transition ${selectedColor === c.name ? "border-foreground ring-2 ring-foreground/20" : "border-border hover:border-primary"}`}
+                      style={{ background: c.hex }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mt-8 flex items-center gap-4">
               <div className="flex items-center border border-border rounded-full">
                 <button onClick={() => setQty(Math.max(1, qty - 1))} className="p-3 hover:bg-secondary rounded-l-full"><Minus className="h-4 w-4" /></button>
@@ -117,10 +152,7 @@ function ProductPage() {
                 <button onClick={() => setQty(qty + 1)} className="p-3 hover:bg-secondary rounded-r-full"><Plus className="h-4 w-4" /></button>
               </div>
               <button
-                onClick={() => {
-                  cart.add({ id: product.id, name: product.name, price: Number(product.price), image: cur?.url }, qty);
-                  toast.success("Adicionado ao carrinho!");
-                }}
+                onClick={handleAdd}
                 className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-rose text-primary-foreground px-6 py-3 rounded-full shadow-soft hover:opacity-90 transition"
               >
                 <ShoppingBag className="h-4 w-4" /> Adicionar ao carrinho
