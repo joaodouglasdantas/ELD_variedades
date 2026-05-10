@@ -57,7 +57,6 @@ function CartPage() {
           </div>
         ) : (
           <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
-            {/* Itens */}
             <div className="lg:col-span-2 space-y-3">
               {cart.items.map((it) => (
                 <div
@@ -104,8 +103,6 @@ function CartPage() {
                 </div>
               ))}
             </div>
-
-            {/* Checkout */}
             <aside className="bg-card border border-border rounded-2xl p-5 sm:p-6 h-fit shadow-card lg:sticky lg:top-24 space-y-4">
               <h2 className="font-display text-xl sm:text-2xl">Finalizar</h2>
 

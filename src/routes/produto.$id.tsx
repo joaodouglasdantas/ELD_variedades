@@ -101,7 +101,6 @@ function ProductPage() {
         </Link>
 
         <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
-          {/* Imagens */}
           <div>
             <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-blossom shadow-card">
               {cur ? (
@@ -129,8 +128,6 @@ function ProductPage() {
               </div>
             )}
           </div>
-
-          {/* Info */}
           <div className="min-w-0">
             {product.categories && (
               <Link

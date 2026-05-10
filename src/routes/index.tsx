@@ -54,7 +54,6 @@ function HomePage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0" style={{ background: heroBg }} />
           <div className="container mx-auto px-4 py-12 md:py-28 relative grid md:grid-cols-2 gap-10 items-center">
@@ -94,8 +93,6 @@ function HomePage() {
             </div>
           </div>
         </section>
-
-        {/* Categorias */}
         {categories && categories.length > 0 && (
           <section className="container mx-auto px-3 sm:px-4 py-10 sm:py-16">
             <h2 className="font-display text-2xl sm:text-3xl text-center">Categorias</h2>
@@ -116,8 +113,6 @@ function HomePage() {
             </div>
           </section>
         )}
-
-        {/* Destaques */}
         <section className="container mx-auto px-3 sm:px-4 py-10 sm:py-16">
           <div className="flex items-end justify-between mb-6 sm:mb-8 gap-2">
             <div className="min-w-0">
@@ -144,8 +139,6 @@ function HomePage() {
             </div>
           )}
         </section>
-
-        {/* Como funciona */}
         <section className="container mx-auto px-3 sm:px-4 py-10 sm:py-16">
           <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
             {[

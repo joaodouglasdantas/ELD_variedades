@@ -52,7 +52,6 @@ function AdminProdutos() {
 
   const del = async (p: ProductRow) => {
     if (!confirm(`Excluir "${p.name}"?`)) return;
-    // Delete storage files
     const paths = p.product_images.map((i) => i.storage_path).filter(Boolean) as string[];
     if (paths.length) await supabase.storage.from("product-images").remove(paths);
     const { error } = await supabase.from("products").delete().eq("id", p.id);
@@ -221,7 +220,6 @@ function ProductForm({
         const { data, error } = await supabase.from("products").insert(payload).select().single();
         if (error) throw error;
         toast.success("Produto criado! Adicione fotos agora.");
-        // Re-open form in edit mode so they can add images
         window.location.hash = data.id;
         onSaved();
       }
@@ -272,7 +270,6 @@ function ProductForm({
             </label>
           </div>
 
-          {/* Sizes */}
           <div className="border-t border-border pt-4">
             <span className="text-sm font-medium">Tamanhos disponíveis</span>
             <p className="text-xs text-muted-foreground mb-2">Ex.: P, M, G ou 36, 38, 40. Deixe vazio se não tiver tamanho.</p>
@@ -298,7 +295,6 @@ function ProductForm({
             )}
           </div>
 
-          {/* Colors */}
           <div className="border-t border-border pt-4">
             <span className="text-sm font-medium">Cores disponíveis</span>
             <p className="text-xs text-muted-foreground mb-2">Adicione um nome (ex.: Rosa) e escolha o tom.</p>
@@ -331,7 +327,6 @@ function ProductForm({
             )}
           </div>
 
-          {/* Images */}
           <div className="border-t border-border pt-4">
             <div className="flex justify-between items-center mb-3">
               <span className="text-sm font-medium">Fotos</span>
