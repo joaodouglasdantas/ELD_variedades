@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
+import eunice from "@/assets/Eunice.png";
 import { Sparkles, Heart, Truck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -61,8 +62,8 @@ function HomePage() {
       <main className="flex-1">
         <section className="relative overflow-hidden">
           <div className="absolute inset-0" style={{ background: heroBg }} />
-          <div className="container mx-auto px-4 py-12 md:py-28 relative grid md:grid-cols-2 gap-10 items-center">
-            <div>
+          <div className="container mx-auto px-4 relative grid md:grid-cols-2 gap-10 items-end">
+            <div className="py-12 md:py-28">
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/70 backdrop-blur text-xs text-primary font-medium border border-border/60">
                 <Sparkles className="h-3 w-3" /> Novidades toda semana
               </span>
@@ -89,11 +90,11 @@ function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="relative hidden md:flex justify-center items-center">
+            <div className="relative hidden md:flex justify-center items-end self-end">
               <img
-                src={logo}
-                alt="Logo Eunice Luzia Dantas"
-                className="relative w-[600px] max-w-full"
+                src={eunice}
+                alt="Eunice Luzia Dantas"
+                className="max-h-[640px] max-w-full object-contain object-bottom"
               />
             </div>
           </div>
