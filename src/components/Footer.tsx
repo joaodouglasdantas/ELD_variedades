@@ -17,7 +17,6 @@ export function Footer() {
           rel="noopener noreferrer"
           className="text-xs text-muted-foreground hover:text-primary transition-colors max-w-xs"
         >
-          <div className="font-medium text-foreground/80">Nosso endereço</div>
           R. Vitorino Paulino, 217 - Estação<br />Almino Afonso - RN, 59760-000
         </a>
         <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} — Feito com ♥ para nossas clientes</p>
