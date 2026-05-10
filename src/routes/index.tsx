@@ -23,15 +23,20 @@ function HomePage() {
         .order("created_at", { ascending: false })
         .limit(8);
       if (error) throw error;
-      return data.map((p) => ({
-        id: p.id,
-        name: p.name,
-        price: Number(p.price),
-        image:
+      return data.map((p) => {
+        const imgs =
           p.product_images
-            ?.sort((a: any, b: any) => a.sort_order - b.sort_order)[0]
-            ?.url ?? null,
-      }));
+            ?.slice()
+            .sort((a: any, b: any) => a.sort_order - b.sort_order)
+            .map((i: any) => i.url) ?? [];
+        return {
+          id: p.id,
+          name: p.name,
+          price: Number(p.price),
+          image: imgs[0] ?? null,
+          images: imgs,
+        };
+      });
     },
   });
 
