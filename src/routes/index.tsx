@@ -27,10 +27,10 @@ function HomePage() {
         id: p.id,
         name: p.name,
         price: Number(p.price),
-        image:
+        images:
           p.product_images
-            ?.sort((a: any, b: any) => a.sort_order - b.sort_order)[0]
-            ?.url ?? null,
+            ?.sort((a: any, b: any) => a.sort_order - b.sort_order)
+            .map((i: any) => i.url) ?? [],
       }));
     },
   });

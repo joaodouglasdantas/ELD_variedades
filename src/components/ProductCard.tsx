@@ -1,14 +1,32 @@
 import { Link } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { brl } from "@/lib/format";
 
 export type ProductCardData = {
   id: string;
   name: string;
   price: number;
+  images?: string[];
   image?: string | null;
 };
 
 export function ProductCard({ p }: { p: ProductCardData }) {
+  const images =
+    p.images && p.images.length > 0
+      ? p.images
+      : p.image
+      ? [p.image]
+      : [];
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setInterval(() => {
+      setIdx((i) => (i + 1) % images.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
   return (
     <Link
       to="/produto/$id"
@@ -18,14 +36,35 @@ export function ProductCard({ p }: { p: ProductCardData }) {
         "shadow-card hover:shadow-soft transition-all hover:-translate-y-1 min-w-0"
       }
     >
-      <div className="aspect-square bg-gradient-blossom overflow-hidden">
-        {p.image ? (
-          <img
-            src={p.image}
-            alt={p.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-          />
+      <div className="aspect-square bg-gradient-blossom overflow-hidden relative">
+        {images.length > 0 ? (
+          <>
+            {images.map((src, i) => (
+              <img
+                key={i}
+                src={src}
+                alt={p.name}
+                className={
+                  "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 " +
+                  (i === idx ? "opacity-100" : "opacity-0")
+                }
+                loading="lazy"
+              />
+            ))}
+            {images.length > 1 && (
+              <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1 pointer-events-none">
+                {images.map((_, i) => (
+                  <span
+                    key={i}
+                    className={
+                      "block h-1.5 rounded-full transition-all duration-300 " +
+                      (i === idx ? "w-4 bg-white" : "w-1.5 bg-white/60")
+                    }
+                  />
+                ))}
+              </div>
+            )}
+          </>
         ) : (
           <div className="w-full h-full grid place-items-center text-muted-foreground/50 font-script text-2xl sm:text-3xl">
             sem foto
