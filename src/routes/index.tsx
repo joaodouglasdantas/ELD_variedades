@@ -23,17 +23,6 @@ function HomePage() {
         .order("created_at", { ascending: false })
         .limit(8);
       if (error) throw error;
-<<<<<<< HEAD
-      return data.map((p) => ({
-        id: p.id,
-        name: p.name,
-        price: Number(p.price),
-        images:
-          p.product_images
-            ?.sort((a: any, b: any) => a.sort_order - b.sort_order)
-            .map((i: any) => i.url) ?? [],
-      }));
-=======
       return data.map((p) => {
         const imgs =
           p.product_images
@@ -48,7 +37,6 @@ function HomePage() {
           images: imgs,
         };
       });
->>>>>>> 6fb586b1ee87f81d33a4714d692640778326094c
     },
   });
 
@@ -172,21 +160,4 @@ function HomePage() {
               {
                 i: Truck,
                 t: "Entrega ou retirada",
-                d: "Combine pagamento (PIX, dinheiro ou cartao) direto com a loja.",
-              },
-            ].map(({ i: Icon, t, d }) => (
-              <div key={t} className="bg-card border border-border rounded-2xl p-5 sm:p-6">
-                <div className="h-10 w-10 rounded-full bg-gradient-rose grid place-items-center text-primary-foreground mb-4 flex-shrink-0">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <h3 className="font-display text-lg sm:text-xl">{t}</h3>
-                <p className="text-sm text-muted-foreground mt-2">{d}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
-  );
-}
+                d: "Combine pagamento (PIX, dinheiro ou cartao) direto com

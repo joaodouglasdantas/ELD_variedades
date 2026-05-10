@@ -42,17 +42,6 @@ function ProductsPage() {
       }
       const { data, error } = await q;
       if (error) throw error;
-<<<<<<< HEAD
-      return data.map((p) => ({
-        id: p.id,
-        name: p.name,
-        price: Number(p.price),
-        images:
-          p.product_images
-            ?.sort((a: any, b: any) => a.sort_order - b.sort_order)
-            .map((i: any) => i.url) ?? [],
-      }));
-=======
       return data.map((p) => {
         const imgs =
           p.product_images
@@ -67,7 +56,6 @@ function ProductsPage() {
           images: imgs,
         };
       });
->>>>>>> 6fb586b1ee87f81d33a4714d692640778326094c
     },
     enabled: !cat || !!categories,
   });
@@ -111,20 +99,4 @@ function ProductsPage() {
         </div>
 
         {isLoading ? (
-          <p className="text-center text-muted-foreground">Carregando...</p>
-        ) : products && products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-            {products.map((p) => (
-              <ProductCard key={p.id} p={p} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 bg-gradient-blossom rounded-3xl px-4">
-            <p className="font-display text-xl">Nenhum produto nesta categoria ainda.</p>
-          </div>
-        )}
-      </main>
-      <Footer />
-    </div>
-  );
-}
+          <p
