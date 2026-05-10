@@ -68,12 +68,12 @@ function AdminProdutos() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="font-display text-3xl">Produtos</h1>
-          <p className="text-muted-foreground mt-1">Cadastre, edite e gerencie suas peças.</p>
+      <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
+        <div className="min-w-0">
+          <h1 className="font-display text-2xl sm:text-3xl">Produtos</h1>
+          <p className="text-muted-foreground mt-1 text-sm sm:text-base">Cadastre, edite e gerencie suas peças.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true); }} className="bg-gradient-rose text-primary-foreground px-5 py-2.5 rounded-full inline-flex items-center gap-2 shadow-card">
+        <button onClick={() => { setEditing(null); setShowForm(true); }} className="bg-gradient-rose text-primary-foreground px-4 sm:px-5 py-2.5 rounded-full inline-flex items-center gap-2 shadow-card text-sm flex-shrink-0">
           <Plus className="h-4 w-4" /> Novo produto
         </button>
       </div>

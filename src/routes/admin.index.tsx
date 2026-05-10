@@ -24,7 +24,7 @@ function AdminHome() {
       <h1 className="font-display text-3xl">Bem-vinda 🌸</h1>
       <p className="text-muted-foreground mt-1">Aqui você gerencia tudo da sua loja.</p>
 
-      <div className="grid md:grid-cols-3 gap-4 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
         <Link to="/admin/produtos" className="bg-card border border-border rounded-2xl p-6 hover:shadow-card transition">
           <Package className="h-6 w-6 text-primary" />
           <div className="font-display text-3xl mt-3">{data?.products ?? 0}</div>
