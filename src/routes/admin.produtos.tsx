@@ -20,6 +20,7 @@ type ProductRow = {
   category_id: string | null;
   active: boolean;
   featured: boolean;
+  gender: "masculino" | "feminino" | "unisex" | null;
   colors: ProductColor[];
   sizes: string[];
   product_images: { id: string; url: string; storage_path: string | null; sort_order: number }[];
@@ -133,6 +134,7 @@ function ProductForm({
   const [categoryId, setCategoryId] = useState(initial?.category_id ?? "");
   const [active, setActive] = useState(initial?.active ?? true);
   const [featured, setFeatured] = useState(initial?.featured ?? false);
+  const [gender, setGender] = useState<"masculino" | "feminino" | "unisex" | "">(initial?.gender ?? "");
   const [sizes, setSizes] = useState<string[]>(initial?.sizes ?? []);
   const [sizeInput, setSizeInput] = useState("");
   const [colors, setColors] = useState<ProductColor[]>(initial?.colors ?? []);
@@ -208,6 +210,7 @@ function ProductForm({
         category_id: categoryId || null,
         active,
         featured,
+        gender: gender || null,
         sizes,
         colors: colors as any,
       };
@@ -268,6 +271,27 @@ function ProductForm({
               <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} />
               <span className="text-sm">Destaque na home</span>
             </label>
+          </div>
+
+          <div>
+            <span className="text-sm font-medium block mb-2">Gênero</span>
+            <div className="flex gap-2">
+              {(["masculino", "feminino", "unisex"] as const).map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  onClick={() => setGender(gender === g ? "" : g)}
+                  className={
+                    "px-4 py-2 rounded-full border text-sm capitalize transition " +
+                    (gender === g
+                      ? "bg-foreground text-background border-foreground"
+                      : "border-border hover:bg-secondary")
+                  }
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="border-t border-border pt-4">

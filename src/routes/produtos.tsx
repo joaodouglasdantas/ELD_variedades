@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { z } from "zod";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/produtos")({
 
 function ProductsPage() {
   const { cat } = Route.useSearch();
+  const [gender, setGender] = useState<"masculino" | "feminino" | "unisex" | "">("");
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -29,17 +31,18 @@ function ProductsPage() {
   });
 
   const { data: products, isLoading } = useQuery({
-    queryKey: ["products", cat ?? "all"],
+    queryKey: ["products", cat ?? "all", gender],
     queryFn: async () => {
       let q = supabase
         .from("products")
-        .select("id, name, price, category_id, product_images(url, sort_order)")
+        .select("id, name, price, category_id, gender, product_images(url, sort_order)")
         .eq("active", true)
         .order("created_at", { ascending: false });
       if (cat && categories) {
         const c = categories.find((x) => x.slug === cat);
         if (c) q = q.eq("category_id", c.id);
       }
+      if (gender) q = q.eq("gender", gender);
       const { data, error } = await q;
       if (error) throw error;
       return data.map((p) => {
@@ -69,7 +72,7 @@ function ProductsPage() {
           <h1 className="font-display text-3xl sm:text-4xl">Produtos</h1>
         </header>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
           <Link
             to="/produtos"
             className={
@@ -95,6 +98,23 @@ function ProductsPage() {
             >
               {c.name}
             </Link>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {(["masculino", "feminino", "unisex"] as const).map((g) => (
+            <button
+              key={g}
+              onClick={() => setGender(gender === g ? "" : g)}
+              className={
+                "px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm border transition capitalize " +
+                (gender === g
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-card hover:bg-secondary border-border")
+              }
+            >
+              {g}
+            </button>
           ))}
         </div>
 
