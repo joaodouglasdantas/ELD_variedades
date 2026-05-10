@@ -42,6 +42,7 @@ function ProductsPage() {
       }
       const { data, error } = await q;
       if (error) throw error;
+<<<<<<< HEAD
       return data.map((p) => ({
         id: p.id,
         name: p.name,
@@ -51,6 +52,22 @@ function ProductsPage() {
             ?.sort((a: any, b: any) => a.sort_order - b.sort_order)
             .map((i: any) => i.url) ?? [],
       }));
+=======
+      return data.map((p) => {
+        const imgs =
+          p.product_images
+            ?.slice()
+            .sort((a: any, b: any) => a.sort_order - b.sort_order)
+            .map((i: any) => i.url) ?? [];
+        return {
+          id: p.id,
+          name: p.name,
+          price: Number(p.price),
+          image: imgs[0] ?? null,
+          images: imgs,
+        };
+      });
+>>>>>>> 6fb586b1ee87f81d33a4714d692640778326094c
     },
     enabled: !cat || !!categories,
   });
