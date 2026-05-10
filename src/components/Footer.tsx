@@ -11,6 +11,15 @@ export function Footer() {
             <div className="text-xs text-muted-foreground truncate">Variedades · Roupas · Perfumes</div>
           </div>
         </div>
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=R.+Vitorino+Paulino,+217+-+Esta%C3%A7%C3%A3o,+Almino+Afonso+-+RN,+59760-000"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-muted-foreground hover:text-primary transition-colors max-w-xs"
+        >
+          <div className="font-medium text-foreground/80">Nosso endereço</div>
+          R. Vitorino Paulino, 217 - Estação<br />Almino Afonso - RN, 59760-000
+        </a>
         <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} — Feito com ♥ para nossas clientes</p>
       </div>
     </footer>
