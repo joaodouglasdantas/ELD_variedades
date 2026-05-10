@@ -99,4 +99,20 @@ function ProductsPage() {
         </div>
 
         {isLoading ? (
-          <p
+          <p className="text-center text-muted-foreground">Carregando...</p>
+        ) : products && products.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            {products.map((p) => (
+              <ProductCard key={p.id} p={p} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 bg-gradient-blossom rounded-3xl px-4">
+            <p className="font-display text-xl">Nenhum produto nesta categoria ainda.</p>
+          </div>
+        )}
+      </main>
+      <Footer />
+    </div>
+  );
+}

@@ -128,7 +128,6 @@ function HomePage() {
               Ver todos
             </Link>
           </div>
-
           {products && products.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
               {products.map((p) => (
@@ -160,4 +159,21 @@ function HomePage() {
               {
                 i: Truck,
                 t: "Entrega ou retirada",
-                d: "Combine pagamento (PIX, dinheiro ou cartao) direto com
+                d: "Combine pagamento (PIX, dinheiro ou cartao) direto com a loja.",
+              },
+            ].map(({ i: Icon, t, d }) => (
+              <div key={t} className="bg-card border border-border rounded-2xl p-5 sm:p-6">
+                <div className="h-10 w-10 rounded-full bg-gradient-rose grid place-items-center text-primary-foreground mb-4 flex-shrink-0">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-lg sm:text-xl">{t}</h3>
+                <p className="text-sm text-muted-foreground mt-2">{d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
